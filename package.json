@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --env production",
+    "build": "./node_modules/.bin/webpack --env production",
     "start": "webpack-dev-server --env development",
     "eslint": "eslint app/ webpack.*.js --cache"
   },
@@ -12,11 +12,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "autoprefixer": "^7.1.1",
     "css-loader": "^0.28.4",
     "eslint": "^4.1.1",
     "eslint-loader": "^1.8.0",
     "extract-text-webpack-plugin": "^2.1.2",
     "html-webpack-plugin": "^2.29.0",
+    "postcss-loader": "^2.0.6",
     "style-loader": "^0.18.2",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0",
