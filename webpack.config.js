@@ -1,60 +1,48 @@
 const path = require('path');
-const HhtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const merge = require('webpack-merge');
+
+const parts = require('./webpack.parts');
 
 const PATHS = {
   app: path.join(__dirname, 'app'),
-  build: path.join(__dirname, 'build')
+  build: path.join(__dirname, 'build'),
 };
 
-const commonConfig = {
-  entry: {
-    app: PATHS.app,
+const commonConfig = merge([
+  {
+    entry: {
+      app: PATHS.app,
+    },
+    output: {
+      path: PATHS.build,
+      filename: '[name].js',
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        title: 'Webpack Demo',
+      }),
+    ],
   },
-  output: {
-    path: PATHS.build,
-    filename: '[name].js',
-  },
-  plugins: [
-    new HhtmlWebpackPlugin({
-      title: 'Webpack Demo',
-    })
-  ]
-}
+  parts.lintJavaScript({ include: PATHS.app }),
+  parts.loadCSS(),
+]);
 
-const productionConfig = () => commonConfig;
+const productionConfig = merge([
 
-const developmentConfig = () => {
-  const config = {
-    // Enable history API fallback so HTML5 History API based
-    // routing works. Good for complex setups.
-    historyApiFallback: true,
+]);
 
-    // Display only errors to reduce the amount of output.
-    stats: 'errors-only',
-
-
-    // Parse host and port from env to allow customization.
-    //
-    // If you use Docker, Vagrant or Cloud9, set
-    // host: options.host || '0.0.0.0';
-    //
-    // 0.0.0.0 is available to all network devices
-    // unlike default `localhost`.
-    host: process.env.HOST, // Defaults to `localhost`
-    port: process.env.PORT, // Defaults to 8080
-  };
-
-  return Object.assign(
-    {},
-    commonConfig,
-    config
-  )
-}
+const developmentConfig = merge([
+  parts.devServer({
+    host: process.env.HOST,
+    port: process.env.PORT,
+  }),
+]);
 
 module.exports = (env) => {
   if (env === 'production') {
-    return productionConfig();
+    return merge(commonConfig, productionConfig);
   }
 
-  return developmentConfig();
-}
+  return merge(commonConfig, developmentConfig);
+};
