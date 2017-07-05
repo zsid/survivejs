@@ -43,6 +43,26 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
   },
 });
 
+exports.lintCSS = ({ include, exclude }) => ({
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        include,
+        exclude,
+        enforce: 'pre',
+
+        loader: 'postcss-loader',
+        options: {
+          plugins: () => ([
+            require('stylelint')(),
+          ]),
+        },
+      },
+    ],
+  },
+});
+
 
 exports.extractCSS = ({ include, exclude, use }) => {
   // Output extracted CSS to a file
