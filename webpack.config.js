@@ -31,15 +31,25 @@ const commonConfig = merge([
 ]);
 
 const productionConfig = merge([
+  {
+    performance: {
+      hints: 'warning',
+      maxEntrypointSize: 100000,
+      maxAssetSize: 450000,
+    },
+  },
+
   parts.extractCSS({
     use: ['css-loader', parts.autoprefix()],
   }),
+
   parts.loadImages({
     options: {
       limit: 10000,
       name: '[name].[ext]',
     },
   }),
+
   parts.extractBundles([
     {
       name: 'vendor',
@@ -50,7 +60,9 @@ const productionConfig = merge([
       ),
     },
   ]),
+
   parts.clean(PATHS.build),
+
   parts.attachRevision(),
 ]);
 
