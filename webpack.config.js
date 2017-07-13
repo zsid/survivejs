@@ -71,6 +71,10 @@ const productionConfig = merge([
         resource.match(/\.js$/)
       ),
     },
+    {
+      name: 'manifest',
+      minChunks: Infinity,
+    },
   ]),
 
   parts.clean(PATHS.build),
