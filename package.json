@@ -7,7 +7,8 @@
     "build": "./node_modules/.bin/webpack --env production",
     "start": "webpack-dev-server --env development",
     "eslint": "eslint app/ webpack.*.js --cache",
-    "lint:style": "stylelint app/**/*.css"
+    "lint:style": "stylelint app/**/*.css",
+    "stats": "webpack --env production --profile --json > stats.json"
   },
   "keywords": [],
   "author": "",
