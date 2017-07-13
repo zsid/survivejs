@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
@@ -26,12 +27,29 @@ const commonConfig = merge([
   },
   parts.lintJavaScript({ include: PATHS.app }),
   parts.lintCSS({ include: PATHS.app }),
+  parts.loadJavaScript({ include: PATHS.app }),
 ]);
 
 const productionConfig = merge([
   parts.extractCSS({
     use: ['css-loader', parts.autoprefix()],
   }),
+  parts.loadImages({
+    options: {
+      limit: 10000,
+      name: '[name].[ext]',
+    },
+  }),
+  parts.extractBundles([
+    {
+      name: 'vendor',
+      minChunks: ({ resource }) => (
+        resource &&
+        resource.indexOf('node_modules') >= 0 &&
+        resource.match(/\.js$/)
+      ),
+    },
+  ]),
 ]);
 
 const developmentConfig = merge([
@@ -40,6 +58,8 @@ const developmentConfig = merge([
     port: process.env.PORT,
   }),
   parts.loadCSS(),
+  parts.loadImages(),
+  parts.generateSourceMaps({ type: 'cheap-module-source-map' }),
 ]);
 
 module.exports = (env) => {

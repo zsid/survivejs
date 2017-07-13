@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 exports.devServer = ({ host, port } = {}) => ({
@@ -96,4 +97,52 @@ exports.autoprefix = () => ({
       require('autoprefixer')(),
     ]),
   },
+});
+
+exports.loadImages = ({ include, exclude, options } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpg|svg)$/,
+        include,
+        exclude,
+        use: {
+          loader: 'url-loader',
+          options,
+        },
+      },
+    ],
+  },
+});
+
+exports.loadJavaScript = ({ include, exclude }) => ({
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include,
+        exclude,
+
+        loader: 'babel-loader',
+        options: {
+          // Enable caching for improved performance during
+          // development.
+          // It uses default OS directory by default. If you need
+          // something more custom, pass a path to it.
+          // I.e., { cacheDirectory: '<path>' }
+          cacheDirectory: true,
+        },
+      },
+    ],
+  },
+});
+
+exports.generateSourceMaps = ({ type }) => ({
+  devtool: type,
+});
+
+exports.extractBundles = bundles => ({
+  plugins: bundles.map(
+    bundle => new webpack.optimize.CommonsChunkPlugin(bundle)
+  )
 });
