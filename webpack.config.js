@@ -79,6 +79,10 @@ const productionConfig = merge([
     },
   }),
 
+  parts.setFreeVariable(
+    'process.env.NODE_ENV',
+    'production'
+  ),
   parts.attachRevision(),
 ]);
 
