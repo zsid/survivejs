@@ -31,9 +31,18 @@ const commonConfig = merge([
 ]);
 
 
-
-
 const productionConfig = merge([
+  {
+    output: {
+      chunkFilename: '[name].[chunkhash:8].js',
+      filename: '[name].[chunkhash:8].js',
+    },
+    
+    plugins: [
+      new webpack.HashedModuleIdsPlugin(),
+    ],
+
+  },
   {
     performance: {
       hints: 'warning',
@@ -49,7 +58,7 @@ const productionConfig = merge([
   parts.loadImages({
     options: {
       limit: 10000,
-      name: '[name].[ext]',
+      name: '[name].[hash:8].[ext]',
     },
   }),
 

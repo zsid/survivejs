@@ -69,11 +69,10 @@ exports.lintCSS = ({ include, exclude }) => ({
   },
 });
 
-
 exports.extractCSS = ({ include, exclude, use }) => {
   // Output extracted CSS to a file
   const plugin = new ExtractTextPlugin({
-    filename: '[name].css',
+    filename: '[name].[contenthash:8].css',
   });
 
   return {
