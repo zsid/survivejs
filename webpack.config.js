@@ -30,6 +30,9 @@ const commonConfig = merge([
   parts.loadJavaScript({ include: PATHS.app }),
 ]);
 
+
+
+
 const productionConfig = merge([
   {
     performance: {
@@ -62,9 +65,15 @@ const productionConfig = merge([
   ]),
 
   parts.clean(PATHS.build),
+  parts.minifyJavaScript(),
 
   parts.attachRevision(),
 ]);
+
+
+
+
+
 
 const developmentConfig = merge([
   parts.devServer({
