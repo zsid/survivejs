@@ -42,6 +42,7 @@ const productionConfig = merge([
       new webpack.HashedModuleIdsPlugin(),
     ],
 
+    recordsPath: path.join(__dirname, 'records.json'),
   },
   {
     performance: {
